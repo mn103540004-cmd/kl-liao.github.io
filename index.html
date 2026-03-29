@@ -14,7 +14,7 @@
   body { font-family: 'Source Sans 3','Noto Serif TC',sans-serif; background: var(--white); color: var(--ink); line-height: 1.7; overflow-x: hidden; }
 
   /* ── EDIT BANNER ── */
-  #edit-banner { display:none; position:fixed; top:0; left:0; right:0; z-index:9998; background:linear-gradient(90deg,var(--accent2),var(--accent)); color:#fff; text-align:center; padding:9px 16px; font-size:0.8rem; font-weight:600; letter-spacing:1px; }
+  #edit-banner { display:none; position:fixed; top:0; left:0; right:0; z-index:9998; background:linear-gradient(90deg,var(--accent2),var(--accent)); color:#fff; text-align:center; padding:9px 16px; font-size:0.82rem; }
   body.editing #edit-banner { display:block; }
   body.editing { padding-top:38px; }
 
@@ -58,17 +58,18 @@
   .hero-right { display:flex; align-items:center; justify-content:center; position:relative; z-index:1; }
   .photo-frame { position:relative; width:320px; height:400px; }
   .photo-frame::before { content:''; position:absolute; top:20px; left:20px; width:100%; height:100%; border:2px solid var(--accent); border-radius:4px; opacity:0.4; }
-  .photo-placeholder { width:100%; height:100%; background:linear-gradient(160deg,rgba(201,168,76,0.1),rgba(139,94,60,0.15)); border:1px solid rgba(201,168,76,0.3); border-radius:4px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px; position:relative; z-index:1; overflow:hidden; }
-  .photo-placeholder img { width:100%; height:100%; object-fit:cover; display:block; border-radius:4px; }
+  .photo-placeholder { width:100%; height:100%; background:linear-gradient(160deg,rgba(201,168,76,0.1),rgba(139,94,60,0.15)); border:1px solid rgba(201,168,76,0.3); border-radius:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px; overflow:hidden; position:relative; }
+  .photo-placeholder img { width:100%; height:100%; object-fit:cover; display:block; border-radius:0; }
   .photo-upload-hint { color:rgba(255,255,255,0.4); font-size:0.85rem; text-align:center; padding:20px; }
   .upload-icon { font-size:3rem; opacity:0.4; }
-  .upload-btn { background:rgba(201,168,76,0.2); border:1px solid rgba(201,168,76,0.5); color:var(--accent); padding:10px 24px; border-radius:20px; cursor:pointer; font-size:0.85rem; font-family:inherit; }
+  .upload-btn { background:rgba(201,168,76,0.2); border:1px solid rgba(201,168,76,0.5); color:var(--accent); padding:10px 24px; border-radius:20px; cursor:pointer; font-size:0.85rem; font-family:inherit; transition:background 0.2s; }
+  .upload-btn:hover { background:rgba(201,168,76,0.35); }
   #photo-input { display:none; }
 
   /* ── NAV ── */
   nav { background:var(--ink); position:sticky; top:0; z-index:100; border-bottom:1px solid rgba(201,168,76,0.2); }
   .nav-inner { max-width:1100px; margin:0 auto; padding:0 40px; display:flex; }
-  nav a { color:rgba(255,255,255,0.6); text-decoration:none; padding:18px 24px; font-size:0.85rem; letter-spacing:1px; text-transform:uppercase; transition:all 0.2s; font-weight:600; border-bottom:2px solid transparent; }
+  nav a { color:rgba(255,255,255,0.6); text-decoration:none; padding:18px 24px; font-size:0.85rem; letter-spacing:1px; text-transform:uppercase; transition:all 0.2s; font-weight:600; border-bottom:2px solid transparent; display:block; }
   nav a:hover { color:var(--accent); border-bottom-color:var(--accent); }
 
   /* ── SECTIONS ── */
@@ -92,11 +93,11 @@
   .edu-timeline::before { content:''; position:absolute; left:0; top:8px; bottom:0; width:1px; background:linear-gradient(180deg,var(--accent),transparent); }
   .edu-item { position:relative; padding-bottom:44px; }
   .edu-item:last-child { padding-bottom:0; }
-  .edu-item::before { content:''; position:absolute; left:-36px; top:8px; width:10px; height:10px; border-radius:50%; background:var(--accent); border:2px solid var(--white); box-shadow:0 0 0 3px rgba(201,168,76,0.3); }
+  .edu-item::before { content:''; position:absolute; left:-36px; top:8px; width:10px; height:10px; border-radius:50%; background:var(--accent); border:2px solid var(--white); box-shadow:0 0 0 3px rgba(201,168,76,0.2); }
   .edu-period { font-size:0.78rem; color:var(--accent); letter-spacing:1px; font-weight:600; margin-bottom:6px; }
   .edu-school { font-family:'Noto Serif TC',serif; font-size:1.1rem; font-weight:500; color:var(--ink); margin-bottom:4px; }
   .edu-detail { font-size:0.88rem; color:var(--muted); }
-  .edu-degree { display:inline-block; background:rgba(201,168,76,0.1); border:1px solid rgba(201,168,76,0.3); color:var(--accent2); padding:2px 12px; border-radius:12px; font-size:0.8rem; margin-top:6px; font-weight:600; }
+  .edu-degree { display:inline-block; background:rgba(201,168,76,0.1); border:1px solid rgba(201,168,76,0.3); color:var(--accent2); padding:2px 12px; border-radius:12px; font-size:0.8rem; margin-top:6px; }
 
   /* ── EXPERIENCE ── */
   .exp-grid { display:grid; gap:20px; }
@@ -110,10 +111,10 @@
 
   /* ── PUBLICATIONS ── */
   .pub-section { margin-bottom:48px; }
-  .pub-cat { font-family:'Playfair Display',serif; font-size:1.3rem; color:var(--ink); margin-bottom:24px; padding-bottom:12px; border-bottom:1px solid var(--line); display:flex; align-items:center; gap:12px; }
+  .pub-cat { font-family:'Playfair Display',serif; font-size:1.3rem; color:var(--ink); margin-bottom:24px; padding-bottom:12px; border-bottom:1px solid var(--line); display:flex; align-items:center; gap:16px; }
   .pub-cat-badge { background:var(--ink); color:var(--accent); padding:3px 12px; border-radius:12px; font-size:0.7rem; font-weight:600; letter-spacing:1px; text-transform:uppercase; }
   .pub-list { list-style:none; display:grid; gap:16px; counter-reset:pub-counter; }
-  .pub-item { background:var(--white); border:1px solid rgba(0,0,0,0.06); border-left:3px solid var(--accent); border-radius:0 8px 8px 0; padding:20px 24px 20px 52px; font-size:0.88rem; color:var(--muted); line-height:1.8; counter-increment:pub-counter; }
+  .pub-item { background:var(--white); border:1px solid rgba(0,0,0,0.06); border-left:3px solid var(--accent); border-radius:0 8px 8px 0; padding:20px 24px 20px 52px; font-size:0.88rem; color:var(--muted); line-height:1.8; position:relative; counter-increment:pub-counter; }
   .pub-item::before { content:counter(pub-counter); position:absolute; left:16px; top:20px; font-family:'Playfair Display',serif; font-size:1.1rem; color:rgba(201,168,76,0.4); font-weight:700; }
   .pub-item:hover { border-left-color:var(--accent2); box-shadow:0 2px 12px rgba(0,0,0,0.05); }
   .pub-item strong { color:var(--ink); text-decoration:underline; text-decoration-color:var(--accent); text-underline-offset:2px; }
@@ -127,9 +128,9 @@
   /* ── EDIT TOOLBAR ── */
   #edit-toolbar { display:none; position:fixed; bottom:28px; right:28px; z-index:9999; flex-direction:column; align-items:flex-end; gap:10px; }
   #edit-toolbar.show-toolbar { display:flex; }
-  #edit-toggle { background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; border:none; border-radius:50px; padding:14px 26px; font-size:0.88rem; font-weight:700; cursor:pointer; box-shadow:0 4px 20px rgba(201,168,76,0.4); display:flex; align-items:center; gap:8px; font-family:inherit; transition:transform 0.15s; }
+  #edit-toggle { background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; border:none; border-radius:50px; padding:14px 26px; font-size:0.88rem; font-weight:700; cursor:pointer; box-shadow:0 4px 20px rgba(201,168,76,0.4); transition:transform 0.2s; font-family:inherit; }
   #edit-toggle:hover { transform:translateY(-2px); }
-  #save-btn { display:none; background:#2d6a4f; color:#fff; border:none; border-radius:50px; padding:12px 22px; font-size:0.82rem; font-weight:700; cursor:pointer; box-shadow:0 4px 16px rgba(45,106,79,0.4); align-items:center; gap:8px; font-family:inherit; }
+  #save-btn { display:none; background:#2d6a4f; color:#fff; border:none; border-radius:50px; padding:12px 22px; font-size:0.82rem; font-weight:700; cursor:pointer; box-shadow:0 4px 16px rgba(45,106,79,0.4); font-family:inherit; align-items:center; gap:8px; }
   body.editing #save-btn { display:flex; }
   #save-btn:hover { filter:brightness(1.1); }
 
@@ -193,10 +194,9 @@
   <div class="hero-right">
     <div class="photo-frame">
       <div class="photo-placeholder" id="photo-container">
-        <div class="upload-icon">👤</div>
-        <div class="photo-upload-hint">點擊上傳個人照片<br><small>Click to upload photo</small></div>
-        <button class="upload-btn" onclick="document.getElementById('photo-input').click()">上傳照片 Upload Photo</button>
-        <input type="file" id="photo-input" accept="image/*" onchange="loadPhoto(event)">
+        <img src="files/profile.jpg" alt="廖桂林個人照" style="width:100%; height:100%; object-fit:cover; display:block; border-radius:0;">
+        <button class="upload-btn" style="position:absolute;bottom:12px;left:50%;transform:translateX(-50%)" onclick="document.getElementById('photo-input').click()">更換照片 Change</button>
+        <input type="file" id="photo-input" accept="image/*" onchange="loadPhoto(event)" style="display:none">
       </div>
     </div>
   </div>
@@ -240,6 +240,11 @@
       <div class="item-controls">
         <button class="del-btn" onclick="deleteCard(this)">✕ 刪除</button>
         <button onclick="editExpertise(this)">✎ 編輯</button>
+      </div>
+      <div class="expertise-num">03</div>
+      <div class="expertise-title" data-editable contenteditable="false">麻醉護理研究</div>
+      <div class="expertise-sub" data-editable contenteditable="false">Anesthesia Nursing Research</div>
+    </div>
   </div>
   <button class="add-item-btn" onclick="addExpertise()">＋ 新增專長項目 Add Expertise</button>
 </section>
@@ -366,20 +371,20 @@
   <div class="pub-section">
     <div class="pub-cat">期刊論文　Journal Articles <span class="pub-cat-badge">TSSCI / EI / SSIE</span></div>
     <ul class="pub-list" id="journal-list">
-      <li class="pub-item"><div class="item-controls"><button class="del-btn" onclick="deleteCard(this)">✕</button><button onclick="editPub(this)">✎</button></div>Hsiao, T. T., <strong>Liao, K. L.</strong>, Chen, M. C., &amp; Wu, Z. F. (2025). Impact of hypercapnia on bispectral index and burst suppression: Insights from anaesthetic management. <em>Indian Journal of Anaesthesia</em>, 69(3), 320–322. <span class="pub-doi">doi: 10.4103/ija.ija_893_24</span></li>
-      <li class="pub-item"><div class="item-controls"><button class="del-btn" onclick="deleteCard(this)">✕</button><button onclick="editPub(this)">✎</button></div>Chu, Y. C., Wang, H. H., Chou, F. H., Hsu, Y. F., &amp; <strong>Liao, K. L.</strong> (2024). Outcomes of trauma-informed care on the psychological health of women experiencing intimate partner violence: a systematic review and meta-analysis. <em>Journal of Psychiatric and Mental Health Nursing</em>, 31(2), 203–214. <span class="pub-doi">doi: 10.1111/jpm.12976</span></li>
-      <li class="pub-item"><div class="item-controls"><button class="del-btn" onclick="deleteCard(this)">✕</button><button onclick="editPub(this)">✎</button></div><strong>Liao, K. L.</strong>, Wang, H. H., Yang, L. Y., Hsu, Y. F., Chou, F. H., &amp; Chu, Y. C. (2024). Effectiveness of chewing gum on nausea and vomiting following postprocedure: a systematic review and meta-analysis. <em>Journal of PeriAnesthesia Nursing</em>, 39(3), 417–424. <span class="pub-doi">doi: 10.1016/j.jopan.2023.08.026</span></li>
-      <li class="pub-item"><div class="item-controls"><button class="del-btn" onclick="deleteCard(this)">✕</button><button onclick="editPub(this)">✎</button></div>Hsu, Y. F., Chou, F. H., Wang, H. H., Chu, Y. C., &amp; <strong>Liao, K. L.</strong> (2023). Effectiveness of integrated care for elderly patients with hip fractures: A systematic review and meta-analysis. <em>Geriatric Nursing</em>, 49, 65–73. <span class="pub-doi">doi: 10.1016/j.gerinurse.2022.11.012</span></li>
-      <li class="pub-item"><div class="item-controls"><button class="del-btn" onclick="deleteCard(this)">✕</button><button onclick="editPub(this)">✎</button></div>Shen, Y. C., <strong>Liao, K. L.</strong>, Cheng, K. I., Tseng, K. Y., &amp; Su, M. P. (2022). Persistent postsurgical pain in oral cancer patients reconstructed with anterolateral thigh free flap. <em>Medicina</em>, 58(3), 391. <span class="pub-doi">doi: 10.3390/medicina58030391</span></li>
-      <li class="pub-item"><div class="item-controls"><button class="del-btn" onclick="deleteCard(this)">✕</button><button onclick="editPub(this)">✎</button></div><strong>Liao, K. L.</strong>, Chen, M. C., Cheng, K. I., &amp; Tseng, K. Y. (2021). A variable dimensional aerosol shield provides for perioperative COVID-19 patients. <em>The Kaohsiung Journal of Medical Sciences</em>, 37(7), 634. <span class="pub-doi">doi: 10.1002/kjm2.12377</span></li>
-      <li class="pub-item"><div class="item-controls"><button class="del-btn" onclick="deleteCard(this)">✕</button><button onclick="editPub(this)">✎</button></div><strong>Liao, K. L.</strong>, Huang, Y. T., Kuo, S. H., Lin, W. T., Chou, F. H., &amp; Chou, P. L. (2019). Registered nurses are at increased risk of hospitalization for infectious diseases and perinatal complications: A population-based observational study. <em>International Journal of Nursing Studies</em>, 91, 70–76. <span class="pub-doi">doi: 10.1016/j.ijnurstu.2018.11.012</span></li>
+      <li class="pub-item"><div class="item-controls"><button class="del-btn" onclick="deleteCard(this)">✕</button><button onclick="editPub(this)">✎</button></div>Hsiao, T. T., <strong>Liao, K. L.</strong>, et al. (2024). Journal article title. <em>Journal Name</em>, 1(1), 1–10.</li>
+      <li class="pub-item"><div class="item-controls"><button class="del-btn" onclick="deleteCard(this)">✕</button><button onclick="editPub(this)">✎</button></div>Chu, Y. C., Wang, H. H., Chou, F., et al. (2023). Journal article title. <em>Journal Name</em>, 2(2), 11–20.</li>
+      <li class="pub-item"><div class="item-controls"><button class="del-btn" onclick="deleteCard(this)">✕</button><button onclick="editPub(this)">✎</button></div><strong>Liao, K. L.</strong>, Wang, et al. (2022). Journal article title. <em>Journal Name</em>, 3(3), 21–30.</li>
+      <li class="pub-item"><div class="item-controls"><button class="del-btn" onclick="deleteCard(this)">✕</button><button onclick="editPub(this)">✎</button></div>Hsu, Y. F., Chou, F. H., Wang, H., et al. (2021). Journal article title. <em>Journal Name</em>, 4(4), 31–40.</li>
+      <li class="pub-item"><div class="item-controls"><button class="del-btn" onclick="deleteCard(this)">✕</button><button onclick="editPub(this)">✎</button></div>Shen, Y. C., <strong>Liao, K. L.</strong>, et al. (2020). Journal article title. <em>Journal Name</em>, 5(5), 41–50.</li>
+      <li class="pub-item"><div class="item-controls"><button class="del-btn" onclick="deleteCard(this)">✕</button><button onclick="editPub(this)">✎</button></div><strong>Liao, K. L.</strong>, Chen, et al. (2019). Journal article title. <em>Journal Name</em>, 6(6), 51–60.</li>
+      <li class="pub-item"><div class="item-controls"><button class="del-btn" onclick="deleteCard(this)">✕</button><button onclick="editPub(this)">✎</button></div><strong>Liao, K. L.</strong>, Huang, et al. (2018). Journal article title. <em>Journal Name</em>, 7(7), 61–70.</li>
     </ul>
     <button class="add-item-btn" onclick="addPublication('journal-list')">＋ 新增期刊論文 Add Journal Article</button>
   </div>
   <div class="pub-section">
     <div class="pub-cat">研討會論文　Conference Papers <span class="pub-cat-badge">Oral Presentation</span></div>
     <ul class="pub-list" id="conf-list">
-      <li class="pub-item"><div class="item-controls"><button class="del-btn" onclick="deleteCard(this)">✕</button><button onclick="editPub(this)">✎</button></div><strong>Liao, K. L.</strong>, Chou, F. H., Wu, J. Y., &amp; Shen, Y. C. (2018). Comparison of hospitalization risk between nursing staff and general public in Taiwan. <em>The 3rd Asian Congress in Nursing Education (ACiNE)</em>, Yogyakarta, Indonesia. April 18–20, 2018. 【Oral Presentation】</li>
+      <li class="pub-item"><div class="item-controls"><button class="del-btn" onclick="deleteCard(this)">✕</button><button onclick="editPub(this)">✎</button></div><strong>Liao, K. L.</strong>, Cho, et al. (2023). Conference paper title. <em>Conference Name</em>.</li>
     </ul>
     <button class="add-item-btn" onclick="addPublication('conf-list')">＋ 新增研討會論文 Add Conference Paper</button>
   </div>
@@ -424,7 +429,7 @@ function loadPhoto(e) {
   const r = new FileReader();
   r.onload = ev => {
     const c = document.getElementById('photo-container');
-    c.innerHTML = `<<img src="profile.jpg" alt="廖桂林個人照" style="width:200px; border-radius:50%;">>
+    c.innerHTML = `<img src="${ev.target.result}" alt="廖桂林個人照" style="width:100%; height:100%; object-fit:cover; display:block; border-radius:0;">
       <button class="upload-btn" style="position:absolute;bottom:12px;left:50%;transform:translateX(-50%)" onclick="document.getElementById('photo-input').click()">更換照片 Change</button>
       <input type="file" id="photo-input" accept="image/*" onchange="loadPhoto(event)" style="display:none">`;
     c.style.position = 'relative';
