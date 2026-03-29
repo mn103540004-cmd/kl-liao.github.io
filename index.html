@@ -125,7 +125,8 @@
   footer span { color:var(--accent); }
 
   /* ── EDIT TOOLBAR ── */
-  #edit-toolbar { position:fixed; bottom:28px; right:28px; z-index:9999; display:flex; flex-direction:column; align-items:flex-end; gap:10px; }
+  #edit-toolbar { display:none; position:fixed; bottom:28px; right:28px; z-index:9999; flex-direction:column; align-items:flex-end; gap:10px; }
+  #edit-toolbar.show-toolbar { display:flex; }
   #edit-toggle { background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; border:none; border-radius:50px; padding:14px 26px; font-size:0.88rem; font-weight:700; cursor:pointer; box-shadow:0 4px 20px rgba(201,168,76,0.4); display:flex; align-items:center; gap:8px; font-family:inherit; transition:transform 0.15s; }
   #edit-toggle:hover { transform:translateY(-2px); }
   #save-btn { display:none; background:#2d6a4f; color:#fff; border:none; border-radius:50px; padding:12px 22px; font-size:0.82rem; font-weight:700; cursor:pointer; box-shadow:0 4px 16px rgba(45,106,79,0.4); align-items:center; gap:8px; font-family:inherit; }
@@ -414,6 +415,14 @@
 </div>
 
 <script>
+// ── Show toolbar only when ?edit=true is in URL ──
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('edit') === 'true') {
+    document.getElementById('edit-toolbar').classList.add('show-toolbar');
+  }
+})();
+
 // ── Photo ──
 function loadPhoto(e) {
   const f = e.target.files[0]; if(!f) return;
@@ -579,14 +588,13 @@ function addPublication(listId) {
 }
 function editPub(btn) {
   const li = btn.closest('.pub-item');
-  // get text without the controls div
   const clone = li.cloneNode(true);
   clone.querySelector('.item-controls')?.remove();
   const txt = clone.innerHTML;
   openModal('編輯著作 Edit Publication',
     `<label>內容（支援HTML）Content (HTML supported)</label><textarea id="f1" rows="7">${txt}</textarea>`,
     () => {
-      li.innerHTML = `<div class="item-controls"><button class="del-btn" onclick="deleteCard(this)">✕</button><button onclick="editPub(this)">✎</button></div>${fv('f1')}`;
+      li.innerHTML = `<div class="item-controls"><button class="del-btn" onclick="deleteCard(this)">✕</button><button onclick="editPub(this)">✎</button></div>${fv('f1')} `;
     });
 }
 </script>
