@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>廖桂林 Kuei-Lin Liao | 麻醉護理專家</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Noto+Serif+TC:wght@300;400;500&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e; --muted: #4a4a6a; --accent: #c9a84c; --accent2: #8b5e3c;
+    --pale: #f5f0e8; --white: #fdfcfa; --line: rgba(201,168,76,0.3); --card: rgba(255,255,255,0.7);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Source Sans 3','Noto Serif TC',sans-serif; background: var(--white); color: var(--ink); line-height: 1.7; overflow-x: hidden; }
+
+  /* ── EDIT BANNER ── */
+  #edit-banner { display:none; position:fixed; top:0; left:0; right:0; z-index:9998; background:linear-gradient(90deg,var(--accent2),var(--accent)); color:#fff; text-align:center; padding:9px 16px; font-size:0.8rem; font-weight:600; letter-spacing:1px; }
+  body.editing #edit-banner { display:block; }
+  body.editing { padding-top:38px; }
+
+  /* ── EDITABLE ── */
+  body.editing [data-editable] { cursor:text; border-radius:3px; outline:1px dashed transparent; transition:background 0.15s,outline 0.15s; }
+  body.editing [data-editable]:hover { background:rgba(201,168,76,0.1); outline:1px dashed rgba(201,168,76,0.6); }
+  body.editing [data-editable]:focus { background:rgba(201,168,76,0.14); outline:2px solid var(--accent); outline-offset:2px; }
+
+  /* ── ITEM CONTROLS ── */
+  .edu-item,.exp-card,.pub-item,.expertise-card { position:relative; }
+  .item-controls { display:none; position:absolute; top:6px; right:8px; gap:5px; z-index:5; }
+  body.editing .edu-item .item-controls,
+  body.editing .exp-card .item-controls,
+  body.editing .pub-item .item-controls,
+  body.editing .expertise-card .item-controls { display:flex; }
+  .item-controls button { background:rgba(20,20,40,0.7); color:#fff; border:none; border-radius:4px; padding:3px 9px; font-size:0.7rem; cursor:pointer; font-family:inherit; }
+  .item-controls .del-btn { background:rgba(180,30,30,0.8); }
+  .item-controls .del-btn:hover { background:rgba(220,30,30,1); }
+  .item-controls button:hover { background:rgba(0,0,0,0.9); }
+
+  /* ── ADD BUTTON ── */
+  .add-item-btn { display:none; width:100%; margin-top:14px; padding:12px; background:transparent; border:2px dashed rgba(201,168,76,0.4); border-radius:8px; color:var(--accent); font-size:0.85rem; cursor:pointer; font-family:inherit; font-weight:600; transition:background 0.15s; }
+  .add-item-btn:hover { background:rgba(201,168,76,0.08); }
+  body.editing .add-item-btn { display:block; }
+
+  /* ── HERO ── */
+  .hero { background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%); min-height:100vh; display:grid; grid-template-columns:1fr 1fr; position:relative; overflow:hidden; }
+  .hero::before { content:''; position:absolute; top:-100px; right:-100px; width:500px; height:500px; background:radial-gradient(circle,rgba(201,168,76,0.12) 0%,transparent 70%); border-radius:50%; }
+  .hero::after { content:''; position:absolute; bottom:-80px; left:30%; width:600px; height:300px; background:radial-gradient(ellipse,rgba(139,94,60,0.08) 0%,transparent 70%); }
+  .hero-left { display:flex; flex-direction:column; justify-content:center; padding:80px 60px 80px 100px; position:relative; z-index:1; }
+  .hero-badge { display:inline-flex; align-items:center; gap:8px; background:rgba(201,168,76,0.15); border:1px solid var(--accent); color:var(--accent); padding:6px 16px; border-radius:20px; font-size:0.75rem; letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:32px; width:fit-content; }
+  .hero-name-zh { font-family:'Noto Serif TC',serif; font-size:4.5rem; font-weight:500; color:#fff; line-height:1.1; letter-spacing:0.1em; margin-bottom:8px; }
+  .hero-name-en { font-family:'Playfair Display',serif; font-size:1.8rem; color:var(--accent); font-style:italic; letter-spacing:0.05em; margin-bottom:28px; }
+  .hero-title { font-family:'Noto Serif TC',serif; font-size:1rem; color:rgba(255,255,255,0.7); line-height:2; margin-bottom:40px; }
+  .hero-title span { display:block; padding:2px 0; }
+  .hero-divider { width:60px; height:2px; background:linear-gradient(90deg,var(--accent),var(--accent2)); margin:28px 0; }
+  .hero-contact { display:flex; flex-direction:column; gap:10px; }
+  .hero-contact a { color:rgba(255,255,255,0.6); text-decoration:none; font-size:0.88rem; display:flex; align-items:center; gap:10px; transition:color 0.2s; }
+  .hero-contact a:hover { color:var(--accent); }
+  .hero-contact .icon { width:20px; text-align:center; color:var(--accent); }
+  .hero-right { display:flex; align-items:center; justify-content:center; position:relative; z-index:1; }
+  .photo-frame { position:relative; width:320px; height:400px; }
+  .photo-frame::before { content:''; position:absolute; top:20px; left:20px; width:100%; height:100%; border:2px solid var(--accent); border-radius:4px; opacity:0.4; }
+  .photo-placeholder { width:100%; height:100%; background:linear-gradient(160deg,rgba(201,168,76,0.1),rgba(139,94,60,0.15)); border:1px solid rgba(201,168,76,0.3); border-radius:4px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px; position:relative; z-index:1; overflow:hidden; }
+  .photo-placeholder img { width:100%; height:100%; object-fit:cover; display:block; border-radius:4px; }
+  .photo-upload-hint { color:rgba(255,255,255,0.4); font-size:0.85rem; text-align:center; padding:20px; }
+  .upload-icon { font-size:3rem; opacity:0.4; }
+  .upload-btn { background:rgba(201,168,76,0.2); border:1px solid rgba(201,168,76,0.5); color:var(--accent); padding:10px 24px; border-radius:20px; cursor:pointer; font-size:0.85rem; font-family:inherit; }
+  #photo-input { display:none; }
+
+  /* ── NAV ── */
+  nav { background:var(--ink); position:sticky; top:0; z-index:100; border-bottom:1px solid rgba(201,168,76,0.2); }
+  .nav-inner { max-width:1100px; margin:0 auto; padding:0 40px; display:flex; }
+  nav a { color:rgba(255,255,255,0.6); text-decoration:none; padding:18px 24px; font-size:0.85rem; letter-spacing:1px; text-transform:uppercase; transition:all 0.2s; font-weight:600; border-bottom:2px solid transparent; }
+  nav a:hover { color:var(--accent); border-bottom-color:var(--accent); }
+
+  /* ── SECTIONS ── */
+  section { max-width:1100px; margin:0 auto; padding:80px 40px; }
+  .section-label { font-size:0.75rem; letter-spacing:3px; text-transform:uppercase; color:var(--accent); font-weight:600; margin-bottom:12px; }
+  .section-title { font-family:'Playfair Display',serif; font-size:2.4rem; color:var(--ink); margin-bottom:8px; }
+  .section-divider { width:48px; height:3px; background:linear-gradient(90deg,var(--accent),var(--accent2)); margin:16px 0 48px; }
+  .section-alt { background:var(--pale); }
+
+  /* ── EXPERTISE ── */
+  .expertise-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+  .expertise-card { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:32px 28px; transition:transform 0.2s,box-shadow 0.2s; overflow:hidden; }
+  .expertise-card::before { content:''; position:absolute; top:0; left:0; width:4px; height:100%; background:linear-gradient(180deg,var(--accent),var(--accent2)); }
+  .expertise-card:hover { transform:translateY(-4px); box-shadow:0 12px 40px rgba(0,0,0,0.08); }
+  .expertise-num { font-family:'Playfair Display',serif; font-size:2.5rem; color:rgba(201,168,76,0.2); font-weight:700; line-height:1; margin-bottom:12px; }
+  .expertise-title { font-family:'Noto Serif TC',serif; font-size:1.05rem; font-weight:500; color:var(--ink); margin-bottom:6px; }
+  .expertise-sub { font-size:0.82rem; color:var(--muted); }
+
+  /* ── EDUCATION ── */
+  .edu-timeline { position:relative; padding-left:32px; }
+  .edu-timeline::before { content:''; position:absolute; left:0; top:8px; bottom:0; width:1px; background:linear-gradient(180deg,var(--accent),transparent); }
+  .edu-item { position:relative; padding-bottom:44px; }
+  .edu-item:last-child { padding-bottom:0; }
+  .edu-item::before { content:''; position:absolute; left:-36px; top:8px; width:10px; height:10px; border-radius:50%; background:var(--accent); border:2px solid var(--white); box-shadow:0 0 0 3px rgba(201,168,76,0.3); }
+  .edu-period { font-size:0.78rem; color:var(--accent); letter-spacing:1px; font-weight:600; margin-bottom:6px; }
+  .edu-school { font-family:'Noto Serif TC',serif; font-size:1.1rem; font-weight:500; color:var(--ink); margin-bottom:4px; }
+  .edu-detail { font-size:0.88rem; color:var(--muted); }
+  .edu-degree { display:inline-block; background:rgba(201,168,76,0.1); border:1px solid rgba(201,168,76,0.3); color:var(--accent2); padding:2px 12px; border-radius:12px; font-size:0.8rem; margin-top:6px; font-weight:600; }
+
+  /* ── EXPERIENCE ── */
+  .exp-grid { display:grid; gap:20px; }
+  .exp-card { background:var(--white); border:1px solid rgba(0,0,0,0.07); border-radius:8px; padding:28px 32px; display:grid; grid-template-columns:1fr auto; gap:16px; align-items:start; }
+  .exp-card:hover { box-shadow:0 4px 20px rgba(0,0,0,0.06); }
+  .exp-role { font-family:'Noto Serif TC',serif; font-size:1.05rem; font-weight:500; color:var(--ink); margin-bottom:4px; }
+  .exp-org { font-size:0.9rem; color:var(--muted); margin-bottom:4px; }
+  .exp-dept { font-size:0.82rem; color:var(--accent2); font-weight:600; }
+  .exp-period { font-size:0.78rem; color:var(--accent); text-align:right; font-weight:600; }
+  .exp-badge { display:inline-block; background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; padding:3px 10px; border-radius:10px; font-size:0.72rem; font-weight:600; margin-top:6px; }
+
+  /* ── PUBLICATIONS ── */
+  .pub-section { margin-bottom:48px; }
+  .pub-cat { font-family:'Playfair Display',serif; font-size:1.3rem; color:var(--ink); margin-bottom:24px; padding-bottom:12px; border-bottom:1px solid var(--line); display:flex; align-items:center; gap:12px; }
+  .pub-cat-badge { background:var(--ink); color:var(--accent); padding:3px 12px; border-radius:12px; font-size:0.7rem; font-weight:600; letter-spacing:1px; text-transform:uppercase; }
+  .pub-list { list-style:none; display:grid; gap:16px; counter-reset:pub-counter; }
+  .pub-item { background:var(--white); border:1px solid rgba(0,0,0,0.06); border-left:3px solid var(--accent); border-radius:0 8px 8px 0; padding:20px 24px 20px 52px; font-size:0.88rem; color:var(--muted); line-height:1.8; counter-increment:pub-counter; }
+  .pub-item::before { content:counter(pub-counter); position:absolute; left:16px; top:20px; font-family:'Playfair Display',serif; font-size:1.1rem; color:rgba(201,168,76,0.4); font-weight:700; }
+  .pub-item:hover { border-left-color:var(--accent2); box-shadow:0 2px 12px rgba(0,0,0,0.05); }
+  .pub-item strong { color:var(--ink); text-decoration:underline; text-decoration-color:var(--accent); text-underline-offset:2px; }
+  .pub-item em { color:var(--ink); }
+  .pub-doi { display:inline-block; margin-top:8px; font-size:0.78rem; color:var(--accent2); font-weight:600; }
+
+  /* ── FOOTER ── */
+  footer { background:var(--ink); text-align:center; padding:40px; color:rgba(255,255,255,0.35); font-size:0.82rem; letter-spacing:1px; }
+  footer span { color:var(--accent); }
+
+  /* ── EDIT TOOLBAR ── */
+  #edit-toolbar { position:fixed; bottom:28px; right:28px; z-index:9999; display:flex; flex-direction:column; align-items:flex-end; gap:10px; }
+  #edit-toggle { background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; border:none; border-radius:50px; padding:14px 26px; font-size:0.88rem; font-weight:700; cursor:pointer; box-shadow:0 4px 20px rgba(201,168,76,0.4); display:flex; align-items:center; gap:8px; font-family:inherit; transition:transform 0.15s; }
+  #edit-toggle:hover { transform:translateY(-2px); }
+  #save-btn { display:none; background:#2d6a4f; color:#fff; border:none; border-radius:50px; padding:12px 22px; font-size:0.82rem; font-weight:700; cursor:pointer; box-shadow:0 4px 16px rgba(45,106,79,0.4); align-items:center; gap:8px; font-family:inherit; }
+  body.editing #save-btn { display:flex; }
+  #save-btn:hover { filter:brightness(1.1); }
+
+  /* ── MODAL ── */
+  .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:99999; align-items:center; justify-content:center; }
+  .modal-overlay.open { display:flex; }
+  .modal { background:var(--white); border-radius:12px; padding:40px; width:min(560px,90vw); max-height:90vh; overflow-y:auto; box-shadow:0 24px 80px rgba(0,0,0,0.25); }
+  .modal h3 { font-family:'Playfair Display',serif; font-size:1.4rem; color:var(--ink); margin-bottom:24px; padding-bottom:12px; border-bottom:2px solid var(--line); }
+  .modal label { display:block; font-size:0.78rem; font-weight:600; letter-spacing:1px; color:var(--muted); text-transform:uppercase; margin-bottom:6px; margin-top:16px; }
+  .modal input,.modal textarea,.modal select { width:100%; padding:10px 14px; border:1px solid rgba(0,0,0,0.15); border-radius:6px; font-size:0.9rem; font-family:inherit; background:var(--white); color:var(--ink); }
+  .modal input:focus,.modal textarea:focus { outline:none; border-color:var(--accent); }
+  .modal textarea { resize:vertical; min-height:90px; }
+  .modal-actions { display:flex; gap:12px; justify-content:flex-end; margin-top:28px; }
+  .modal-actions button { padding:10px 24px; border-radius:6px; font-size:0.88rem; cursor:pointer; font-family:inherit; font-weight:600; border:none; }
+  .btn-cancel { background:#f0f0f0; color:var(--muted); }
+  .btn-save { background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; }
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:900px) {
+    .hero { grid-template-columns:1fr; }
+    .hero-left { padding:60px 32px 40px; }
+    .hero-name-zh { font-size:3rem; }
+    .expertise-grid { grid-template-columns:1fr; }
+    .exp-card { grid-template-columns:1fr; }
+    section { padding:60px 24px; }
+    #edit-toolbar { bottom:16px; right:16px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="edit-banner">✎ 編輯模式啟動 — 點擊文字可直接修改，使用 ✎ 按鈕編輯卡片 | Edit Mode: click text to edit directly, use ✎ buttons for cards</div>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-left">
+    <div class="hero-badge"><span>◈</span> Nursing Professional &amp; Researcher</div>
+    <div class="hero-name-zh" data-editable contenteditable="false">廖桂林</div>
+    <div class="hero-name-en" data-editable contenteditable="false">Kuei-Lin Liao</div>
+    <div class="hero-divider"></div>
+    <div class="hero-title">
+      <span data-editable contenteditable="false">🏥 高雄醫學大學附設中和紀念醫院</span>
+      <span data-editable contenteditable="false">💉 麻醉部　護理長</span>
+      <span data-editable contenteditable="false">🎓 高雄醫學大學護理學博士班</span>
+    </div>
+    <div class="hero-contact">
+      <a href="#">
+        <span class="icon">✉</span>
+        <span data-editable contenteditable="false">MN103540004@gmail.com</span>
+      </a>
+      <a href="#">
+        <span class="icon">☎</span>
+        <span data-editable contenteditable="false">0920-372-255</span>
+      </a>
+      <a href="#">
+        <span class="icon">📍</span>
+        <span data-editable contenteditable="false">高雄市左營區新莊一路195號12樓之3</span>
+      </a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="photo-frame">
+      <div class="photo-placeholder" id="photo-container">
+        <div class="upload-icon">👤</div>
+        <div class="photo-upload-hint">點擊上傳個人照片<br><small>Click to upload photo</small></div>
+        <button class="upload-btn" onclick="document.getElementById('photo-input').click()">上傳照片 Upload Photo</button>
+        <input type="file" id="photo-input" accept="image/*" onchange="loadPhoto(event)">
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="#expertise">專長</a>
+    <a href="#education">學歷</a>
+    <a href="#experience">經歷</a>
+    <a href="#publications">著作</a>
+  </div>
+</nav>
+
+<!-- EXPERTISE -->
+<section id="expertise">
+  <div class="section-label">Areas of Expertise</div>
+  <div class="section-title">專業領域</div>
+  <div class="section-divider"></div>
+  <div class="expertise-grid" id="expertise-grid">
+    <div class="expertise-card">
+      <div class="item-controls">
+        <button class="del-btn" onclick="deleteCard(this)">✕ 刪除</button>
+        <button onclick="editExpertise(this)">✎ 編輯</button>
+      </div>
+      <div class="expertise-num">01</div>
+      <div class="expertise-title" data-editable contenteditable="false">麻醉護理照護</div>
+      <div class="expertise-sub" data-editable contenteditable="false">Anesthesia Nursing Care</div>
+    </div>
+    <div class="expertise-card">
+      <div class="item-controls">
+        <button class="del-btn" onclick="deleteCard(this)">✕ 刪除</button>
+        <button onclick="editExpertise(this)">✎ 編輯</button>
+      </div>
+      <div class="expertise-num">02</div>
+      <div class="expertise-title" data-editable contenteditable="false">麻醉護理教育</div>
+      <div class="expertise-sub" data-editable contenteditable="false">Anesthesia Nursing Education</div>
+    </div>
+    <div class="expertise-card">
+      <div class="item-controls">
+        <button class="del-btn" onclick="deleteCard(this)">✕ 刪除</button>
+        <button onclick="editExpertise(this)">✎ 編輯</button>
+      </div>
+      <div class="expertise-num">03</div>
+      <div class="expertise-title" data-editable contenteditable="false">健保資料庫研究</div>
+      <div class="expertise-sub" data-editable contenteditable="false">Health Insurance Database Research</div>
+    </div>
+  </div>
+  <button class="add-item-btn" onclick="addExpertise()">＋ 新增專長項目 Add Expertise</button>
+</section>
+
+<!-- EDUCATION -->
+<div class="section-alt">
+<section id="education">
+  <div class="section-label">Academic Background</div>
+  <div class="section-title">學歷</div>
+  <div class="section-divider"></div>
+  <div class="edu-timeline" id="edu-timeline">
+    <div class="edu-item">
+      <div class="item-controls">
+        <button class="del-btn" onclick="deleteCard(this)">✕ 刪除</button>
+        <button onclick="editEducation(this)">✎ 編輯</button>
+      </div>
+      <div class="edu-period" data-editable contenteditable="false">2021 / 06 — 迄今</div>
+      <div class="edu-school" data-editable contenteditable="false">高雄醫學大學</div>
+      <div class="edu-detail" data-editable contenteditable="false">護理學博士班</div>
+      <div class="edu-degree" data-editable contenteditable="false">肄業中 In Progress</div>
+    </div>
+    <div class="edu-item">
+      <div class="item-controls">
+        <button class="del-btn" onclick="deleteCard(this)">✕ 刪除</button>
+        <button onclick="editEducation(this)">✎ 編輯</button>
+      </div>
+      <div class="edu-period" data-editable contenteditable="false">2014 / 09 — 2017 / 02</div>
+      <div class="edu-school" data-editable contenteditable="false">高雄醫學大學</div>
+      <div class="edu-detail" data-editable contenteditable="false">護理學研究所　成人組</div>
+      <div class="edu-degree" data-editable contenteditable="false">碩士 Master of Science</div>
+    </div>
+    <div class="edu-item">
+      <div class="item-controls">
+        <button class="del-btn" onclick="deleteCard(this)">✕ 刪除</button>
+        <button onclick="editEducation(this)">✎ 編輯</button>
+      </div>
+      <div class="edu-period" data-editable contenteditable="false">2005 / 09 — 2009 / 06</div>
+      <div class="edu-school" data-editable contenteditable="false">高雄醫學大學</div>
+      <div class="edu-detail" data-editable contenteditable="false">護理學系</div>
+      <div class="edu-degree" data-editable contenteditable="false">理學士 Bachelor of Science</div>
+    </div>
+  </div>
+  <button class="add-item-btn" onclick="addEducation()">＋ 新增學歷 Add Education</button>
+</section>
+</div>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-label">Professional Experience</div>
+  <div class="section-title">學經歷</div>
+  <div class="section-divider"></div>
+  <div class="exp-grid" id="exp-grid">
+    <div class="exp-card">
+      <div class="item-controls">
+        <button class="del-btn" onclick="deleteCard(this)">✕ 刪除</button>
+        <button onclick="editExperience(this)">✎ 編輯</button>
+      </div>
+      <div>
+        <div class="exp-role" data-editable contenteditable="false">護理長　Head Nurse</div>
+        <div class="exp-org" data-editable contenteditable="false">高雄醫學大學附設中和紀念醫院</div>
+        <div class="exp-dept" data-editable contenteditable="false">麻醉部</div>
+        <div><span class="exp-badge">現職 Current</span></div>
+      </div>
+      <div class="exp-period" data-editable contenteditable="false">2022 / 08 — 迄今</div>
+    </div>
+    <div class="exp-card">
+      <div class="item-controls">
+        <button class="del-btn" onclick="deleteCard(this)">✕ 刪除</button>
+        <button onclick="editExperience(this)">✎ 編輯</button>
+      </div>
+      <div>
+        <div class="exp-role" data-editable contenteditable="false">副護理長　Associate Head Nurse</div>
+        <div class="exp-org" data-editable contenteditable="false">高雄醫學大學附設中和紀念醫院</div>
+        <div class="exp-dept" data-editable contenteditable="false">麻醉部</div>
+      </div>
+      <div class="exp-period" data-editable contenteditable="false">2020 / 08 — 2022 / 07</div>
+    </div>
+    <div class="exp-card">
+      <div class="item-controls">
+        <button class="del-btn" onclick="deleteCard(this)">✕ 刪除</button>
+        <button onclick="editExperience(this)">✎ 編輯</button>
+      </div>
+      <div>
+        <div class="exp-role" data-editable contenteditable="false">麻醉護理組長　Anesthesia Nursing Team Leader</div>
+        <div class="exp-org" data-editable contenteditable="false">高雄醫學大學附設中和紀念醫院</div>
+        <div class="exp-dept" data-editable contenteditable="false">麻醉部</div>
+      </div>
+      <div class="exp-period" data-editable contenteditable="false">2018 / 01 — 2020 / 08</div>
+    </div>
+    <div class="exp-card">
+      <div class="item-controls">
+        <button class="del-btn" onclick="deleteCard(this)">✕ 刪除</button>
+        <button onclick="editExperience(this)">✎ 編輯</button>
+      </div>
+      <div>
+        <div class="exp-role" data-editable contenteditable="false">麻醉護理師　Anesthesia Nurse</div>
+        <div class="exp-org" data-editable contenteditable="false">高雄醫學大學附設中和紀念醫院</div>
+        <div class="exp-dept" data-editable contenteditable="false">麻醉部</div>
+      </div>
+      <div class="exp-period" data-editable contenteditable="false">2012 / 09 — 2018</div>
+    </div>
+    <div class="exp-card">
+      <div class="item-controls">
+        <button class="del-btn" onclick="deleteCard(this)">✕ 刪除</button>
+        <button onclick="editExperience(this)">✎ 編輯</button>
+      </div>
+      <div>
+        <div class="exp-role" data-editable contenteditable="false">護理師　Registered Nurse</div>
+        <div class="exp-org" data-editable contenteditable="false">嘉義基督教醫院</div>
+        <div class="exp-dept" data-editable contenteditable="false">綜合加護病房</div>
+      </div>
+      <div class="exp-period" data-editable contenteditable="false">2010 / 08 — 2012 / 08</div>
+    </div>
+  </div>
+  <button class="add-item-btn" onclick="addExperience()">＋ 新增經歷 Add Experience</button>
+</section>
+
+<!-- PUBLICATIONS -->
+<div class="section-alt">
+<section id="publications">
+  <div class="section-label">Academic Publications</div>
+  <div class="section-title">學術著作</div>
+  <div class="section-divider"></div>
+  <div class="pub-section">
+    <div class="pub-cat">期刊論文　Journal Articles <span class="pub-cat-badge">TSSCI / EI / SSIE</span></div>
+    <ul class="pub-list" id="journal-list">
+      <li class="pub-item"><div class="item-controls"><button class="del-btn" onclick="deleteCard(this)">✕</button><button onclick="editPub(this)">✎</button></div>Hsiao, T. T., <strong>Liao, K. L.</strong>, Chen, M. C., &amp; Wu, Z. F. (2025). Impact of hypercapnia on bispectral index and burst suppression: Insights from anaesthetic management. <em>Indian Journal of Anaesthesia</em>, 69(3), 320–322. <span class="pub-doi">doi: 10.4103/ija.ija_893_24</span></li>
+      <li class="pub-item"><div class="item-controls"><button class="del-btn" onclick="deleteCard(this)">✕</button><button onclick="editPub(this)">✎</button></div>Chu, Y. C., Wang, H. H., Chou, F. H., Hsu, Y. F., &amp; <strong>Liao, K. L.</strong> (2024). Outcomes of trauma-informed care on the psychological health of women experiencing intimate partner violence: a systematic review and meta-analysis. <em>Journal of Psychiatric and Mental Health Nursing</em>, 31(2), 203–214. <span class="pub-doi">doi: 10.1111/jpm.12976</span></li>
+      <li class="pub-item"><div class="item-controls"><button class="del-btn" onclick="deleteCard(this)">✕</button><button onclick="editPub(this)">✎</button></div><strong>Liao, K. L.</strong>, Wang, H. H., Yang, L. Y., Hsu, Y. F., Chou, F. H., &amp; Chu, Y. C. (2024). Effectiveness of chewing gum on nausea and vomiting following postprocedure: a systematic review and meta-analysis. <em>Journal of PeriAnesthesia Nursing</em>, 39(3), 417–424. <span class="pub-doi">doi: 10.1016/j.jopan.2023.08.026</span></li>
+      <li class="pub-item"><div class="item-controls"><button class="del-btn" onclick="deleteCard(this)">✕</button><button onclick="editPub(this)">✎</button></div>Hsu, Y. F., Chou, F. H., Wang, H. H., Chu, Y. C., &amp; <strong>Liao, K. L.</strong> (2023). Effectiveness of integrated care for elderly patients with hip fractures: A systematic review and meta-analysis. <em>Geriatric Nursing</em>, 49, 65–73. <span class="pub-doi">doi: 10.1016/j.gerinurse.2022.11.012</span></li>
+      <li class="pub-item"><div class="item-controls"><button class="del-btn" onclick="deleteCard(this)">✕</button><button onclick="editPub(this)">✎</button></div>Shen, Y. C., <strong>Liao, K. L.</strong>, Cheng, K. I., Tseng, K. Y., &amp; Su, M. P. (2022). Persistent postsurgical pain in oral cancer patients reconstructed with anterolateral thigh free flap. <em>Medicina</em>, 58(3), 391. <span class="pub-doi">doi: 10.3390/medicina58030391</span></li>
+      <li class="pub-item"><div class="item-controls"><button class="del-btn" onclick="deleteCard(this)">✕</button><button onclick="editPub(this)">✎</button></div><strong>Liao, K. L.</strong>, Chen, M. C., Cheng, K. I., &amp; Tseng, K. Y. (2021). A variable dimensional aerosol shield provides for perioperative COVID-19 patients. <em>The Kaohsiung Journal of Medical Sciences</em>, 37(7), 634. <span class="pub-doi">doi: 10.1002/kjm2.12377</span></li>
+      <li class="pub-item"><div class="item-controls"><button class="del-btn" onclick="deleteCard(this)">✕</button><button onclick="editPub(this)">✎</button></div><strong>Liao, K. L.</strong>, Huang, Y. T., Kuo, S. H., Lin, W. T., Chou, F. H., &amp; Chou, P. L. (2019). Registered nurses are at increased risk of hospitalization for infectious diseases and perinatal complications: A population-based observational study. <em>International Journal of Nursing Studies</em>, 91, 70–76. <span class="pub-doi">doi: 10.1016/j.ijnurstu.2018.11.012</span></li>
+    </ul>
+    <button class="add-item-btn" onclick="addPublication('journal-list')">＋ 新增期刊論文 Add Journal Article</button>
+  </div>
+  <div class="pub-section">
+    <div class="pub-cat">研討會論文　Conference Papers <span class="pub-cat-badge">Oral Presentation</span></div>
+    <ul class="pub-list" id="conf-list">
+      <li class="pub-item"><div class="item-controls"><button class="del-btn" onclick="deleteCard(this)">✕</button><button onclick="editPub(this)">✎</button></div><strong>Liao, K. L.</strong>, Chou, F. H., Wu, J. Y., &amp; Shen, Y. C. (2018). Comparison of hospitalization risk between nursing staff and general public in Taiwan. <em>The 3rd Asian Congress in Nursing Education (ACiNE)</em>, Yogyakarta, Indonesia. April 18–20, 2018. 【Oral Presentation】</li>
+    </ul>
+    <button class="add-item-btn" onclick="addPublication('conf-list')">＋ 新增研討會論文 Add Conference Paper</button>
+  </div>
+</section>
+</div>
+
+<footer>
+  <p>廖桂林 <span>Kuei-Lin Liao</span> &nbsp;|&nbsp; 高雄醫學大學附設中和紀念醫院 &nbsp;|&nbsp; 麻醉部護理長</p>
+  <p style="margin-top:8px;">© 2025 All Rights Reserved</p>
+</footer>
+
+<!-- TOOLBAR -->
+<div id="edit-toolbar">
+  <button id="save-btn" onclick="saveEdits()">💾 儲存 Save</button>
+  <button id="edit-toggle" onclick="toggleEditMode()">✎ 編輯個人資料</button>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="bgClose(event)">
+  <div class="modal">
+    <h3 id="modal-title"></h3>
+    <div id="modal-body"></div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">取消 Cancel</button>
+      <button class="btn-save" onclick="doSave()">確認 Confirm</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Photo ──
+function loadPhoto(e) {
+  const f = e.target.files[0]; if(!f) return;
+  const r = new FileReader();
+  r.onload = ev => {
+    const c = document.getElementById('photo-container');
+    c.innerHTML = `<img src="${ev.target.result}" alt="廖桂林">
+      <button class="upload-btn" style="position:absolute;bottom:12px;left:50%;transform:translateX(-50%)" onclick="document.getElementById('photo-input').click()">更換照片 Change</button>
+      <input type="file" id="photo-input" accept="image/*" onchange="loadPhoto(event)" style="display:none">`;
+    c.style.position = 'relative';
+  };
+  r.readAsDataURL(f);
+}
+
+// ── Toggle Edit Mode ──
+let editing = false;
+function toggleEditMode() {
+  editing = !editing;
+  document.body.classList.toggle('editing', editing);
+  const btn = document.getElementById('edit-toggle');
+  document.querySelectorAll('[data-editable]').forEach(el => {
+    el.contentEditable = editing ? 'true' : 'false';
+    if(!editing) el.blur();
+  });
+  btn.textContent = editing ? '✕ 結束編輯 Done' : '✎ 編輯個人資料';
+  btn.style.background = editing ? 'linear-gradient(135deg,#555,#333)' : '';
+}
+
+function saveEdits() {
+  const b = document.getElementById('save-btn');
+  b.textContent = '✓ 已儲存！Saved!';
+  setTimeout(() => b.textContent = '💾 儲存 Save', 2200);
+}
+
+function deleteCard(btn) {
+  const target = btn.closest('.edu-item,.exp-card,.pub-item,.expertise-card');
+  if(confirm('確定刪除？Delete this item?')) target.remove();
+}
+
+// ── Modal ──
+let _cb = null;
+function openModal(title, html, cb) {
+  document.getElementById('modal-title').textContent = title;
+  document.getElementById('modal-body').innerHTML = html;
+  _cb = cb;
+  document.getElementById('modal-overlay').classList.add('open');
+}
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  _cb = null;
+}
+function bgClose(e) { if(e.target===document.getElementById('modal-overlay')) closeModal(); }
+function doSave() { if(_cb) _cb(); closeModal(); }
+const fv = id => (document.getElementById(id)||{}).value||'';
+
+// ── Expertise ──
+function addExpertise() {
+  openModal('新增專長 Add Expertise',
+    `<label>中文名稱</label><input id="f1" placeholder="麻醉護理照護">
+     <label>English Title</label><input id="f2" placeholder="Anesthesia Nursing Care">`,
+    () => {
+      const g = document.getElementById('expertise-grid');
+      const n = g.querySelectorAll('.expertise-card').length + 1;
+      const d = document.createElement('div'); d.className='expertise-card';
+      d.innerHTML = `<div class="item-controls"><button class="del-btn" onclick="deleteCard(this)">✕ 刪除</button><button onclick="editExpertise(this)">✎ 編輯</button></div>
+        <div class="expertise-num">0${n}</div>
+        <div class="expertise-title" data-editable contenteditable="${editing}">${fv('f1')||'新專長'}</div>
+        <div class="expertise-sub" data-editable contenteditable="${editing}">${fv('f2')||'New'}</div>`;
+      g.appendChild(d);
+    });
+}
+function editExpertise(btn) {
+  const c = btn.closest('.expertise-card');
+  openModal('編輯專長 Edit Expertise',
+    `<label>中文名稱</label><input id="f1" value="${c.querySelector('.expertise-title').textContent}">
+     <label>English</label><input id="f2" value="${c.querySelector('.expertise-sub').textContent}">`,
+    () => { c.querySelector('.expertise-title').textContent=fv('f1'); c.querySelector('.expertise-sub').textContent=fv('f2'); });
+}
+
+// ── Education ──
+function addEducation() {
+  openModal('新增學歷 Add Education',
+    `<label>期間 Period</label><input id="f1" placeholder="2014 / 09 — 2017 / 02">
+     <label>學校 School</label><input id="f2" placeholder="高雄醫學大學">
+     <label>系所 Department</label><input id="f3" placeholder="護理學研究所">
+     <label>學位 Degree</label><input id="f4" placeholder="碩士 Master of Science">`,
+    () => {
+      const t = document.getElementById('edu-timeline');
+      const d = document.createElement('div'); d.className='edu-item';
+      d.innerHTML = `<div class="item-controls"><button class="del-btn" onclick="deleteCard(this)">✕ 刪除</button><button onclick="editEducation(this)">✎ 編輯</button></div>
+        <div class="edu-period" data-editable contenteditable="${editing}">${fv('f1')}</div>
+        <div class="edu-school" data-editable contenteditable="${editing}">${fv('f2')}</div>
+        <div class="edu-detail" data-editable contenteditable="${editing}">${fv('f3')}</div>
+        <div class="edu-degree" data-editable contenteditable="${editing}">${fv('f4')}</div>`;
+      t.appendChild(d);
+    });
+}
+function editEducation(btn) {
+  const i = btn.closest('.edu-item');
+  openModal('編輯學歷 Edit Education',
+    `<label>期間</label><input id="f1" value="${i.querySelector('.edu-period').textContent}">
+     <label>學校</label><input id="f2" value="${i.querySelector('.edu-school').textContent}">
+     <label>系所</label><input id="f3" value="${i.querySelector('.edu-detail').textContent}">
+     <label>學位</label><input id="f4" value="${i.querySelector('.edu-degree').textContent}">`,
+    () => {
+      i.querySelector('.edu-period').textContent=fv('f1');
+      i.querySelector('.edu-school').textContent=fv('f2');
+      i.querySelector('.edu-detail').textContent=fv('f3');
+      i.querySelector('.edu-degree').textContent=fv('f4');
+    });
+}
+
+// ── Experience ──
+function addExperience() {
+  openModal('新增經歷 Add Experience',
+    `<label>職稱 Role</label><input id="f1" placeholder="護理長　Head Nurse">
+     <label>機構 Organization</label><input id="f2" placeholder="高雄醫學大學附設中和紀念醫院">
+     <label>部門 Department</label><input id="f3" placeholder="麻醉部">
+     <label>期間 Period</label><input id="f4" placeholder="2022 / 08 — 迄今">
+     <label>現職標籤 (留空則不顯示)</label><input id="f5" placeholder="現職 Current">`,
+    () => {
+      const g = document.getElementById('exp-grid');
+      const d = document.createElement('div'); d.className='exp-card';
+      const badge = fv('f5') ? `<div><span class="exp-badge">${fv('f5')}</span></div>` : '';
+      d.innerHTML = `<div class="item-controls"><button class="del-btn" onclick="deleteCard(this)">✕ 刪除</button><button onclick="editExperience(this)">✎ 編輯</button></div>
+        <div>
+          <div class="exp-role" data-editable contenteditable="${editing}">${fv('f1')}</div>
+          <div class="exp-org" data-editable contenteditable="${editing}">${fv('f2')}</div>
+          <div class="exp-dept" data-editable contenteditable="${editing}">${fv('f3')}</div>
+          ${badge}
+        </div>
+        <div class="exp-period" data-editable contenteditable="${editing}">${fv('f4')}</div>`;
+      g.appendChild(d);
+    });
+}
+function editExperience(btn) {
+  const c = btn.closest('.exp-card');
+  openModal('編輯經歷 Edit Experience',
+    `<label>職稱</label><input id="f1" value="${c.querySelector('.exp-role').textContent}">
+     <label>機構</label><input id="f2" value="${c.querySelector('.exp-org').textContent}">
+     <label>部門</label><input id="f3" value="${c.querySelector('.exp-dept').textContent}">
+     <label>期間</label><input id="f4" value="${c.querySelector('.exp-period').textContent}">`,
+    () => {
+      c.querySelector('.exp-role').textContent=fv('f1');
+      c.querySelector('.exp-org').textContent=fv('f2');
+      c.querySelector('.exp-dept').textContent=fv('f3');
+      c.querySelector('.exp-period').textContent=fv('f4');
+    });
+}
+
+// ── Publications ──
+function addPublication(listId) {
+  openModal('新增著作 Add Publication',
+    `<label>完整引用 Full Citation</label><textarea id="f1" rows="5" placeholder="作者. (年份). 標題. 期刊名稱, 卷(期), 頁碼."></textarea>
+     <label>DOI（選填）</label><input id="f2" placeholder="10.xxxx/xxxxx">`,
+    () => {
+      const ul = document.getElementById(listId);
+      const li = document.createElement('li'); li.className='pub-item';
+      const doi = fv('f2') ? `<span class="pub-doi">doi: ${fv('f2')}</span>` : '';
+      li.innerHTML = `<div class="item-controls"><button class="del-btn" onclick="deleteCard(this)">✕</button><button onclick="editPub(this)">✎</button></div>${fv('f1')} ${doi}`;
+      ul.appendChild(li);
+    });
+}
+function editPub(btn) {
+  const li = btn.closest('.pub-item');
+  // get text without the controls div
+  const clone = li.cloneNode(true);
+  clone.querySelector('.item-controls')?.remove();
+  const txt = clone.innerHTML;
+  openModal('編輯著作 Edit Publication',
+    `<label>內容（支援HTML）Content (HTML supported)</label><textarea id="f1" rows="7">${txt}</textarea>`,
+    () => {
+      li.innerHTML = `<div class="item-controls"><button class="del-btn" onclick="deleteCard(this)">✕</button><button onclick="editPub(this)">✎</button></div>${fv('f1')}`;
+    });
+}
+</script>
+</body>
+</html>
